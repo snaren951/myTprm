@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const userSchema = new mongoose.Schema({
     firstName:{
         type: String,
@@ -28,12 +30,35 @@ const userSchema = new mongoose.Schema({
             message: "{VALUE} is not supported"
         }
     },
-    VATID:{
-        type: Number
-        
+    userGroups:{
+        type: [String],
+        enum:{
+            values: ["Admin", "VendorManager","RiskManager","QA","Developer"],
+            message: `{VALUE} is not supported`
+        },
+        required: function (){
+         return this.userType === "Internal"
+
+        }
     }
 
-},{timeStamps: true});
+},
+{ timestamps: true });
+
+userSchema.methods.isPasswordMatchedMethod = async function (passwordFromRequest){
+    const user = this;
+    const matched = await bcrypt.compare(passwordFromRequest, user.password);
+    return matched;
+
+
+};
+
+userSchema.methods.signJWTMethod = async function (){
+    const user = this;
+    const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET);
+    return token;
+
+}
 
 const Users = mongoose.model("Users", userSchema);
 

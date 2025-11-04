@@ -1,8 +1,10 @@
 const dbConnect = require("./config/dbconnection.js");
-const Users = require("./models/users.js");
+//const Users = require("./models/users.js");
+//const Vendors = require("./models/vendors.js");
 const express = require ("express");
 const app = express();
 const userRouter = require("./routes/userRoutes.js");
+const vendorRouter = require("./routes/vendorRoutes.js");
 const testRouter = require("./routes/testRoutes.js");
 require("dotenv").config();
 
@@ -21,6 +23,7 @@ catch (err => {
 app.use(express.json());
 
 app.use("/",userRouter);
+app.use("/", vendorRouter);
 //app.use("/",testRouter);
 
 
