@@ -43,6 +43,56 @@ vendorRouter.post("/createVendor", auth, async function(req, res){
 
 });
 
+vendorRouter.get("/viewVendor", auth, async function(req, res){
+try{
+
+    const loggedInUser = req.user;
+    const loggedInUserId = req.user._id;
+    const userType = req.user.userType;
+
+    //console.log("User Id: "+loggedInUserId);
+
+    if (!userType || !loggedInUserId){
+
+        return res.status(401).send("Invalid User");
+    }
+
+    let vendorsList;
+
+
+
+    if (userType =="External"){
+
+         vendorsList = await Vendors.find({vendorContacts:loggedInUserId});
+
+    }
+
+    else if (userType == "Internal"){
+
+         vendorsList = await Vendors.find(); 
+
+    }
+
+    const msg =  vendorsList.length>0? "Vendor Data Retrieved Successfully" : "No Data Found";
+
+      res.json({
+            data: vendorsList,
+            message: msg
+        });
+
+
+  
+
+
+}
+
+catch(err){
+
+    res.status(401).send("something went wrong: " +err.message);
+}
+
+});
+
 
 
 module.exports = vendorRouter;
