@@ -1,8 +1,8 @@
 #TPRM Backend APIs
-A simple project to implement the TPRM backend APIs to create/view vendors based on permissions.
+- A simple project to implement the TPRM backend APIs to create/view vendors based on permissions.
 
 ##UserAPIs
-This section deals with the APIs to create user profiles/update users etc.
+- This section deals with the APIs to create user profiles/update users etc.
 
 ##Vendor APIs
 This section deals with the APIs related to Vendors such as CreateVendor, ViewVendor & updateVendor etc.
