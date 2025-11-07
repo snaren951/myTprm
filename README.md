@@ -15,9 +15,7 @@ This section deals with the APIs related to Vendors such as CreateVendor, ViewVe
 3. UpdateVendor
 -
 
-External ---->
-vendors.find(vendorContact includes current user) 
-Internal ---> vendors.find() --> This will display all vendors.
+
 
 
 
