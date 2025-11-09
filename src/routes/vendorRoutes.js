@@ -43,6 +43,8 @@ vendorRouter.post("/createVendor", auth, async function(req, res){
 
 });
 
+
+
 vendorRouter.get("/viewVendor", auth, async function(req, res){
 try{
 
@@ -96,6 +98,8 @@ catch(err){
 }
 
 });
+
+
 
 
 
