@@ -1,5 +1,9 @@
 const express = require("express");
 const auth = require("../authentication/auth.js");
+const multer = require("multer");
+const upload = multer({dest:'tempFiles/'});
+const fs = require ("node:fs");
+const csv = require ("csv-parser");
 
 const vendorRouter = express.Router();
 
@@ -99,6 +103,77 @@ catch(err){
 
 });
 
+vendorRouter.put("/bulkUpdateVendors", auth, upload.single('file'), async function (req, res){
+
+    try{
+
+
+        const loggedInUser = req.user;
+
+        if(!loggedInUser.userGroups.includes("Admin")){
+
+        return res.status(401).send("Unauthorized Request - Only an Admin can create a vendor");
+      }
+
+      
+
+  if (!req.file){
+
+    return res.status(400).send("No File uploaded");
+  }
+
+      const filePath = req.file.path;
+      const results = [];
+
+      fs.createReadStream(filePath).pipe(csv())
+        .on('data', (row)=>{
+            //console.log("reading the file");
+            results.push(row);
+        })
+        .on('end', async ()=>{
+            //console.log("File reading completed");
+            //Iniitating the DB search and upadte by ID process
+            const resultAfterUpdate=[];
+
+            for (let i=0; i<results.length; i++){
+
+                try{
+
+                    const vendorToUpdate = await Vendors.findOneAndUpdate({_id:results[i]._id}, {vendorName: results[i].vendorName, address:results[i].address}, {new:true});
+                    resultAfterUpdate.push(vendorToUpdate);
+                }
+
+                catch(err){
+
+                    return res.status(400).send("Error in saing the record to DB: "+err);
+                }
+                
+            }
+           const totalUpdated = resultAfterUpdate.length;
+            res.json({data: resultAfterUpdate, message: `${totalUpdated} records updated successfully`});
+
+        
+        
+        
+        })
+        .on('error', ()=>console.log("Error in Reading the file"));
+
+      
+      
+      
+     
+     
+
+
+    }
+
+    catch(err){
+
+        res.status(401).send("Something went wrong. "+err);
+    }
+
+
+});
 
 
 

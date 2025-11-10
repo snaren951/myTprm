@@ -1,7 +1,7 @@
 const express = require ("express");
 const testRouter = express.Router();
 
-console.log("This is from the testroutes.js file");
+//console.log("This is from the testroutes.js file");
 
 testRouter.post("/test", async function(req, res){
 
