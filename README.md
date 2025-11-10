@@ -20,10 +20,11 @@ This section deals with the APIs related to Vendors such as CreateVendor, ViewVe
 
 3. BulkUpdateVendor
 
-- By this, I am trying mimic Data Import feature in Archer where we upload a CSV file with some records
+- By this, I am trying to mimic Data Import feature in Archer where we upload a CSV file with some records
 - Each row in the file represents a record on its own
 - And the data in the file would replace/overried the data in Target System
 - Only Admin can perform this bulk data update for vendors
+- Leveraged Multer , CSV parser NPM modules as part of the implementation.
 
 
 
