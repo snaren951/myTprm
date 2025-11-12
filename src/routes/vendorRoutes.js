@@ -8,6 +8,7 @@ const csv = require ("csv-parser");
 const vendorRouter = express.Router();
 
 const Vendors = require("../models/vendors.js");
+const { skip } = require("node:test");
 
 vendorRouter.post("/createVendor", auth, async function(req, res){
 
@@ -56,6 +57,21 @@ try{
     const loggedInUserId = req.user._id;
     const userType = req.user.userType;
 
+    const pageNumber = req.query.pageNumber;
+    //console.log(pageNumber);
+
+    const page = (pageNumber != undefined && pageNumber!=0)? pageNumber : 1;
+    console.log(page);
+
+   const limit = req.query.limit;
+   const limitCount = (limit!= undefined ||limit != 0)?limit:null;
+
+    //const limitCount=(limit)
+
+    
+    //const limitCount =3;
+    const skipCount = (page-1)*limitCount;
+
     //console.log("User Id: "+loggedInUserId);
 
     if (!userType || !loggedInUserId){
@@ -73,13 +89,14 @@ try{
 
     if (userType =="External"){
 
-         vendorsList = await Vendors.find({vendorContacts:loggedInUserId});
+         vendorsList = await Vendors.find({vendorContacts:loggedInUserId}).skip(skipCount).limit(limitCount);
+         
 
     }
 
     else if (userType == "Internal"){
 
-         vendorsList = await Vendors.find(); 
+         vendorsList = await Vendors.find().skip(skipCount).limit(limitCount); 
 
     }
 
