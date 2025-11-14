@@ -10,23 +10,23 @@ const vendorRouter = express.Router();
 const Vendors = require("../models/vendors.js");
 const { skip } = require("node:test");
 
-// vendorRouter.get("/vendor/:id", async function (req, res){
+vendorRouter.get("/vendor/:id", async function (req, res){
 
-//     console.log(req.body);
-
-
-//     console.log("for the /vendor ID route");
-//     res.send("Form the vendor ID route");
-
-// });
-
-// vendorRouter.get("/vendor", async function (req, res){
+    console.log(req.body);
 
 
-//     console.log("for the /vendor route");
-//     res.send("From the vendor Route");
+    console.log("for the /vendor ID route");
+    res.send("Form the vendor ID route");
 
-// });
+});
+
+vendorRouter.get("/vendor", async function (req, res){
+
+
+    console.log("for the /vendor route");
+    res.send("From the vendor Route");
+
+});
 
 
 
